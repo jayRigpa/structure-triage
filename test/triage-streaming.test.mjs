@@ -12,6 +12,10 @@ test("streams Anthropic text deltas to the client", async () => {
   globalThis.fetch = async (_url, options) => {
     const requestBody = JSON.parse(options.body);
     assert.equal(requestBody.stream, true, "Anthropic requests must enable streaming");
+    assert.ok(
+      requestBody.max_tokens >= 3000,
+      "final mappings need enough output tokens to reach the required state marker",
+    );
 
     const encoder = new TextEncoder();
     const upstreamBody = new ReadableStream({

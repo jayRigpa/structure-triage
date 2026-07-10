@@ -64,7 +64,7 @@ export default async (req) => {
         },
         body: JSON.stringify({
           model: MODEL,
-          max_tokens: 1200,
+          max_tokens: 3200,
           stream: true,
           system: [
             { type: "text", text: systemText, cache_control: { type: "ephemeral" } },
