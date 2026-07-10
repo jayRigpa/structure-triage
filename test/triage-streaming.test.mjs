@@ -23,13 +23,15 @@ test("streams Anthropic text deltas to the client", async () => {
         controller.enqueue(encoder.encode(
           'event: content_block_delta\ndata: {"type":"content_block_delta","delta":{"type":"text_delta","text":"Hello "}}\n\n',
         ));
-        controller.enqueue(encoder.encode(
-          'event: content_block_delta\ndata: {"type":"content_block_delta","delta":{"type":"text_delta","text":"world"}}\n\n',
-        ));
-        controller.enqueue(encoder.encode(
-          'event: message_stop\ndata: {"type":"message_stop"}\n\n',
-        ));
-        controller.close();
+        setTimeout(() => {
+          controller.enqueue(encoder.encode(
+            'event: content_block_delta\ndata: {"type":"content_block_delta","delta":{"type":"text_delta","text":"world"}}\n\n',
+          ));
+          controller.enqueue(encoder.encode(
+            'event: message_stop\ndata: {"type":"message_stop"}\n\n',
+          ));
+          controller.close();
+        }, 100);
       },
     });
 
@@ -40,15 +42,36 @@ test("streams Anthropic text deltas to the client", async () => {
   };
 
   try {
-    const response = await triage(new Request("https://example.test/api/triage", {
+    const responsePromise = triage(new Request("https://example.test/api/triage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: [{ role: "user", content: "Map this case." }] }),
     }));
+    const response = await Promise.race([
+      responsePromise,
+      new Promise((_, reject) => setTimeout(
+        () => reject(new Error("handler buffered the upstream response instead of streaming")),
+        50,
+      )),
+    ]);
 
     assert.equal(response.status, 200);
     assert.match(response.headers.get("content-type") || "", /^text\/plain/);
-    assert.equal(await response.text(), "Hello world");
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    const first = await reader.read();
+    assert.equal(decoder.decode(first.value), "Hello ");
+    assert.equal(first.done, false, "first delta must arrive before the stream closes");
+
+    let remainder = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      remainder += decoder.decode(value, { stream: true });
+    }
+    remainder += decoder.decode();
+    assert.equal(remainder, "world");
   } finally {
     globalThis.fetch = originalFetch;
   }
