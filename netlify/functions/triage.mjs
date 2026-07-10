@@ -65,21 +65,31 @@ export default async (req) => {
         body: JSON.stringify({
           model: MODEL,
           max_tokens: 1200,
+          stream: true,
           system: [
             { type: "text", text: systemText, cache_control: { type: "ephemeral" } },
           ],
           messages: trimmed,
         }),
       });
-      const data = await resp.json();
       if (!resp.ok) {
+        const data = await resp.json().catch(() => null);
         return json({ error: data?.error?.message || `Anthropic API error (${resp.status})` }, 502);
       }
-      text = (data.content || [])
-        .filter((b) => b.type === "text")
-        .map((b) => b.text)
-        .join("\n")
-        .trim();
+      if (!resp.body) {
+        return json({ error: "Anthropic API returned an empty response stream." }, 502);
+      }
+
+      // Return Anthropic's text as it arrives. The final diagnostic mapping is much
+      // longer than the intake turns; buffering it made the Netlify function hit its
+      // synchronous response deadline before sending any bytes to the browser.
+      return new Response(anthropicTextStream(resp.body), {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store",
+        },
+      });
     } else {
       // OpenAI-compatible /chat/completions (OpenAI, z.ai GLM, etc.).
       // These providers cache repeated prompt prefixes automatically.
@@ -107,6 +117,63 @@ export default async (req) => {
     return json({ error: "Upstream request failed: " + (err?.message || String(err)) }, 502);
   }
 };
+
+function anthropicTextStream(upstream) {
+  let buffer = "";
+
+  function processEvents(controller, flush = false) {
+    buffer = buffer.replace(/\r\n/g, "\n");
+    let boundary;
+
+    while ((boundary = buffer.indexOf("\n\n")) !== -1) {
+      const event = buffer.slice(0, boundary);
+      buffer = buffer.slice(boundary + 2);
+      emitEvent(event, controller);
+    }
+
+    if (flush && buffer.trim()) {
+      emitEvent(buffer, controller);
+      buffer = "";
+    }
+  }
+
+  function emitEvent(eventBlock, controller) {
+    const data = eventBlock
+      .split("\n")
+      .filter((line) => line.startsWith("data:"))
+      .map((line) => line.slice(5).trimStart())
+      .join("\n");
+
+    if (!data || data === "[DONE]") return;
+
+    const event = JSON.parse(data);
+    if (event.type === "error") {
+      throw new Error(event.error?.message || "Anthropic stream failed.");
+    }
+
+    const text =
+      event.type === "content_block_delta" && event.delta?.type === "text_delta"
+        ? event.delta.text
+        : event.type === "content_block_start" && event.content_block?.type === "text"
+          ? event.content_block.text
+          : "";
+
+    if (text) controller.enqueue(text);
+  }
+
+  return upstream
+    .pipeThrough(new TextDecoderStream())
+    .pipeThrough(new TransformStream({
+      transform(chunk, controller) {
+        buffer += chunk;
+        processEvents(controller);
+      },
+      flush(controller) {
+        processEvents(controller, true);
+      },
+    }))
+    .pipeThrough(new TextEncoderStream());
+}
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {

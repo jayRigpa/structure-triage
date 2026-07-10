@@ -81,18 +81,36 @@ async function callApi() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: turns }),
     });
-    const data = await resp.json();
-    dot.remove();
+    const contentType = resp.headers.get("content-type") || "";
+    let reply;
 
-    if (!resp.ok || data.error) {
-      addMsg("error", data.error || "The connection failed. Try sending again.");
+    if (contentType.includes("application/json")) {
+      const data = await resp.json();
+      if (!resp.ok || data.error) {
+        dot.remove();
+        addMsg("error", data.error || `Request failed (${resp.status}).`);
+        return;
+      }
+      reply = data.reply;
+    } else {
+      reply = await resp.text();
+      if (!resp.ok) {
+        dot.remove();
+        addMsg("error", reply || `Request failed (${resp.status}).`);
+        return;
+      }
+    }
+
+    dot.remove();
+    if (!reply) {
+      addMsg("error", "The facilitator returned an empty response. Try sending again.");
       return;
     }
-    turns.push({ role: "assistant", content: data.reply });
-    addMsg("facilitator", applyState(data.reply));
-  } catch {
+    turns.push({ role: "assistant", content: reply });
+    addMsg("facilitator", applyState(reply));
+  } catch (error) {
     dot.remove();
-    addMsg("error", "The connection failed. Try sending again.");
+    addMsg("error", `The connection failed: ${error?.message || "unknown error"}. Try sending again.`);
   }
 }
 

@@ -5,6 +5,7 @@
   "private": true,
   "description": "Calibrated practice-structure triage grounded in the Stage 4 diagnostic framework. Static frontend + Netlify Function proxy to the Anthropic API.",
   "scripts": {
-    "check": "node --check public/app.js && node --check netlify/functions/*.mjs"
+    "test": "node --test",
+    "check": "node --check public/app.js && node --check netlify/functions/*.mjs test/*.mjs && node --test"
   }
 }
