@@ -3,14 +3,14 @@
    of each reply; the UI parses it to drive the rail, then strips it. */
 
 const STRUCTURES = [
-  "Structure 1", "Structure 2", "Structure 3",
+  "Thought / Narrative Identification",
+  "Body / Affect Identification",
+  "Control & Vigilance",
   "Craving & Seeking", "Aversion",
   "Strong Concentration, Weak Insight", "Strong Insight, Weak Stabilization",
   "Devotional Temperament", "Skeptical / Inquiry Temperament",
   "Trauma-Loaded / Parts-Dominated", "Late Stage: Transparent Priors",
 ];
-// Note: names 1–3 are placeholders; update to match the framework document
-// (they're labels only — diagnosis itself comes from the embedded document).
 
 const STATE_RE = /\[\[state\s+phase=([a-z]+)\s+candidates=([\d,\s]*|none)\]\]\s*$/i;
 

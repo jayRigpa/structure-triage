@@ -19,15 +19,15 @@ The full framework document travels as a cached system block: after the first re
 
 ## Setup
 
-1. **Paste the framework.** Open `netlify/functions/framework-doc.mjs`, replace the placeholder between the backticks with the complete Stage 4 markdown (escape any triple-backticks in the document as \\\`\\\`\\\`), and set `FRAMEWORK_READY = true`. Until this is done, the app deploys fine but the facilitator tells users the instrument isn't configured and declines to assess — it will never improvise the framework from general knowledge.
+1. **Confirm the framework.** `netlify/functions/framework-doc.mjs` contains the Stage 4 markdown and `FRAMEWORK_READY = true`. If you replace the framework later, keep it between the backticks and escape any triple-backticks in the document as \\\`\\\`\\\`.
 
-2. **Update rail labels (optional).** In `public/app.js`, the `STRUCTURES` array holds the display names for the sidebar; names for Structures 1–3 are placeholders. These are labels only — diagnosis comes from the document.
+2. **Check rail labels (optional).** In `public/app.js`, the `STRUCTURES` array holds the display names for the sidebar. These are labels only — diagnosis comes from the embedded document.
 
-3. **Push to GitHub and connect Netlify** — identical to the dyad app:
+3. **Push to GitHub and connect Netlify**:
    ```bash
-   git init && git add -A && git commit -m "Structure triage v1"
-   git remote add origin git@github.com:YOUR_USERNAME/structure-triage.git
-   git push -u origin main
+   git add -A
+   git commit -m "Structure triage v1"
+   git push origin main
    ```
    Netlify → Add new site → Import from GitHub → set env var `ANTHROPIC_API_KEY` → trigger deploy. Optional: `TRIAGE_MODEL` to override the default (`claude-sonnet-4-6`).
 
