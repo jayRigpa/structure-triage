@@ -92,7 +92,7 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <main>
-    <nav aria-label="Return to assessment"><a href="/">← Back to the practice triage instrument</a></nav>
+    <nav aria-label="Return to assessment"><a href="/">← Back to the practice assessment instrument</a></nav>
     <article>
       ${article}
     </article>

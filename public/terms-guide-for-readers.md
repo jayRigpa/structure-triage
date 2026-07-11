@@ -35,8 +35,7 @@ usage. When the facilitator says a prior "filters" experience, it means the
 prediction shapes what you perceive and how, before anything reaches awareness.
 
 **Precision.** The weight or confidence assigned to a prior — how much grip it
-has. Much of what contemplative practice does, in this framework's account, is
-**precision-relaxation**: not deleting patterns but reducing their grip so they
+has. Much of what contemplative practice does, in this framework's account, is **precision-relaxation**: not deleting patterns but reducing their grip so they
 can be seen as patterns. When a practice "reallocates precision," the felt sense
 is that something which used to be simply *how things are* becomes visible as
 one way things are being constructed.
