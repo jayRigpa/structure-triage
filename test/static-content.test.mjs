@@ -37,3 +37,17 @@ test("offers an optional Phase 4 practice experiment and exposes its state", asy
   assert.match(prompt, /Would you like to turn one of these directions into a concrete practice experiment\?/);
   assert.match(prompt, /phase=screening\|intake\|dialogue\|mapping\|experiment candidates=/);
 });
+
+test("publishes the beta feedback form and links it from the instrument", async () => {
+  const [index, feedback, thanks] = await Promise.all([
+    readFile(new URL("../public/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../public/feedback.html", import.meta.url), "utf8"),
+    readFile(new URL("../public/thanks.html", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(index, /Beta tester\? <a href="\/feedback\.html"[^>]*>Share feedback here\.<\/a>/);
+  assert.match(index, /<a href="\/feedback\.html" class="quiet"[^>]*>Feedback<\/a>/);
+  assert.match(feedback, /<form name="beta-feedback"[\s\S]*data-netlify="true"/);
+  assert.match(feedback, /action="\/thanks\.html"/);
+  assert.match(thanks, /Thank you — this is how it gets better\./);
+});
