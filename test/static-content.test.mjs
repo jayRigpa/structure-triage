@@ -25,3 +25,15 @@ test("embeds the revised Stage 4 framework", () => {
   assert.match(FRAMEWORK_DOC, /W — NATURALNESS/);
   assert.match(FRAMEWORK_DOC, /Attractor load/);
 });
+
+test("offers an optional Phase 4 practice experiment and exposes its state", async () => {
+  const prompt = await readFile(
+    new URL("../netlify/functions/triage-prompt.mjs", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(prompt, /PROTOCOL — five phases, in order\. Never skip Phase 0\./);
+  assert.match(prompt, /PHASE 4 — PRACTICE EXPERIMENT \(optional, only if the person accepts the offer\)/);
+  assert.match(prompt, /Would you like to turn one of these directions into a concrete practice experiment\?/);
+  assert.match(prompt, /phase=screening\|intake\|dialogue\|mapping\|experiment candidates=/);
+});
