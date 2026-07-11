@@ -89,6 +89,8 @@ body {
 .primary:disabled { opacity: 0.45; cursor: default; }
 
 .fineprint { margin-top: 1.25rem; font-size: 0.8rem; color: var(--dim); }
+.guide-link { margin-top: 1.25rem; font-size: 0.95rem; }
+.guide-link a { color: var(--ink); text-underline-offset: 0.2em; }
 
 /* ---------- assessment layout ---------- */
 

@@ -1,11 +1,8 @@
 // ============================================================
-// FRAMEWORK DOCUMENT — PASTE THE FULL STAGE 4 MARKDOWN BELOW
+// FRAMEWORK DOCUMENT — GENERATED FROM THE CURRENT STAGE 4 MARKDOWN
 // ============================================================
-// Replace everything between the backticks with the complete
-// text of "Stage 4 — Practice Derivation as Diagnosis".
-// Keep the backticks. If the document itself contains backticks
-// (```), escape them as \`\`\` or the file will not parse.
-// Then: git add -A && git commit -m "framework" && git push
+// Keep the markdown between the backticks. If it ever contains
+// backticks or \${...}, escape them before embedding it here.
 // ============================================================
 
 export const FRAMEWORK_DOC = `
@@ -14,13 +11,38 @@ export const FRAMEWORK_DOC = `
 Status: Stage 4 of 5, the primary deliverable. Derives practice selection from
 the Stage 3 model, organized by PRESENTING STRUCTURE rather than by tradition or
 technique. Binding inheritances: the five routes (contrast, exhaustion,
-relaxation, resolution, affective); the endpoint branch (C-attractor,
-N-attractor, T-configuration unresolved) — every practice line is tagged with
-the attractor it historically loads toward, so practice selection is endpoint
-selection made consciously; and the raft-clause — this framework is an
-instrument, and section 11's failure mode applies to the framework itself.
+relaxation, resolution, affective); the endpoint branch (C, N, T-unresolved, W)
+— every practice line is tagged with the attractor it historically loads toward,
+so practice selection is endpoint selection made consciously; and the raft-clause
+ — this framework is an instrument, and section 11's failure mode applies to the
+ framework itself.
 Tags: ESTABLISHED / CONTESTED / INFERRED / SPECULATIVE; [PR] practitioner
 report. Note: Stage 5 has not yet run; confidence marks are provisional.
+
+
+## Endpoint Classes (inherited from Stage 2)
+
+Four endpoint classes, defined by their traditions' own summit language:
+
+C — CESSATION-ORIENTED. Theravada nibbāna as extinguishment; nirodha-samāpatti;
+path and fruition moments. Summit language: cessation, the unconditioned, the
+deathless, release. World-relation: the ending of becoming.
+
+N — NONDUAL RECOGNITION. Dzogchen rigpa; Mahamudra; Advaita self-realization and
+sahaja; Kashmir Shaivism pratyabhijñā; Zen kenshō and its stabilization. Summit
+language: recognition of the nature of mind, luminous cognizance, One without a
+second. World-relation: appearances continue, seen as the display of the
+recognized nature.
+
+T — THEISTIC UNION. Teresa's spiritual marriage; John of the Cross's living flame;
+Sufi fanāʾ and baqāʾ; with an apophatic strand (Eckhart, the Cloud of Unknowing,
+Dionysius) held separately because it behaves differently below [in Stage 2's divergence analysis]. Summit language:
+union, indwelling, annihilation-in-God and subsistence-in-God. World-relation:
+transfigured relationship.
+
+W — NATURALNESS. Taoist wu wei and ziran; zuowang (sitting-in-forgetfulness);
+sagehood. Summit language: effortless action, alignment with the Tao,
+self-so-ness. World-relation: frictionless participation.
 
 ## How to Use This Document
 
@@ -446,8 +468,6 @@ inherit Stage 3's tags (mostly INFERRED on mechanism, ESTABLISHED on practice
 effects); the Structure 10 sequencing rule is the framework's highest-
 confidence clinical claim; the Structure 11 portfolio is the most [PR]-
 dependent section and the first place an adversarial pass should press.
-
 `;
 
-// Set to true once the real Stage 4 text has been pasted above.
 export const FRAMEWORK_READY = true;
