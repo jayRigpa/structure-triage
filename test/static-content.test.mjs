@@ -15,7 +15,8 @@ test("publishes the formatted reader terms guide and links it from the landing p
     /<a[^>]+href="terms-guide-for-readers\.html"[^>]*>New to the framework's vocabulary\? Read the terms guide first \(10 min\)<\/a>/,
   );
   assert.match(source, /^# Before Your Reading: A Guide to the Terms/m);
-  assert.match(guide, /<h1>Before Your Reading: A Guide to the Terms<\/h1>/);
+  assert.match(guide, /<title>A Guide to the Terms<\/title>/);
+  assert.match(guide, /<h1>A Guide to the Terms<\/h1>/);
   assert.match(guide, /<strong>The raft-clause\.<\/strong>/);
   assert.match(guide, /width: min\(100% - 40px, 850px\)/);
 });
@@ -49,5 +50,7 @@ test("publishes the beta feedback form and links it from the instrument", async 
   assert.match(index, /<a href="\/feedback\.html" class="quiet"[^>]*>Feedback<\/a>/);
   assert.match(feedback, /<form name="beta-feedback"[\s\S]*data-netlify="true"/);
   assert.match(feedback, /action="\/thanks\.html"/);
+  assert.match(feedback, /8\. Compared to a skilled human conducting a diagnostic intake conversation/);
+  assert.doesNotMatch(feedback, /Drawing on your own training as a coach/);
   assert.match(thanks, /Thank you — this is how it gets better\./);
 });
