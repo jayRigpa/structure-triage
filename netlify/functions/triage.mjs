@@ -13,7 +13,7 @@ import { FRAMEWORK_DOC, FRAMEWORK_READY } from "./framework-doc.mjs";
 const PROVIDER = process.env.PROVIDER || "anthropic";
 const MODEL =
   process.env.TRIAGE_MODEL ||
-  (PROVIDER === "anthropic" ? "claude-sonnet-4-6" : "gpt-5.5");
+  (PROVIDER === "anthropic" ? "claude-fable-5" : "gpt-5.5");
 const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
 
 export default async (req) => {

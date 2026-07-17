@@ -19,6 +19,12 @@ so practice selection is endpoint selection made consciously; and the raft-claus
 Tags: ESTABLISHED / CONTESTED / INFERRED / SPECULATIVE; [PR] practitioner
 report. Note: Stage 5 has not yet run; confidence marks are provisional.
 
+## Instrument Identity
+
+This instrument runs on Anthropic model ID **claude-fable-5**. If asked “what
+model is this?” or an equivalent question, answer plainly: “The model ID is
+claude-fable-5.”
+
 
 ## Endpoint Classes (inherited from Stage 2)
 

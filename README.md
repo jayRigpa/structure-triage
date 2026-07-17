@@ -29,7 +29,7 @@ The full framework document travels as a cached system block: after the first re
    git commit -m "Structure triage v1"
    git push origin main
    ```
-   Netlify → Add new site → Import from GitHub → set env var `ANTHROPIC_API_KEY` → trigger deploy. Optional: `TRIAGE_MODEL` to override the default (`claude-sonnet-4-6`).
+   Netlify → Add new site → Import from GitHub → set env var `ANTHROPIC_API_KEY` → trigger deploy. Optional: `TRIAGE_MODEL` to override the default (`claude-fable-5`).
 
 ## Cost control (open link)
 
