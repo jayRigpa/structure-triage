@@ -61,6 +61,7 @@ function addMsg(role, content) {
     sp.textContent = "Facilitator";
     div.appendChild(sp);
     const body = document.createElement("span");
+    body.className = "body";
     body.textContent = content;
     div.appendChild(body);
   } else {
@@ -138,7 +139,7 @@ function exportTranscript() {
     ``,
     ...turns.map((t) => {
       const clean = t.content.replace(STATE_RE, "").trim();
-      return t.role === "user" ? `**You:** ${clean}\n` : `**Facilitator:** ${clean}\n`;
+      return t.role === "user" ? `**You:**\n\n${clean}\n` : `**Facilitator:**\n\n${clean}\n`;
     }),
   ];
   const blob = new Blob([lines.join("\n")], { type: "text/markdown" });

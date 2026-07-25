@@ -163,6 +163,10 @@ body {
 
 .msg.facilitator { font-size: 0.98rem; }
 
+.msg.facilitator .body {
+  white-space: pre-wrap;
+}
+
 .msg.facilitator .speaker {
   font-family: var(--display);
   font-size: 0.85rem;

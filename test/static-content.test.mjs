@@ -39,6 +39,30 @@ test("offers an optional Phase 4 practice experiment and exposes its state", asy
   assert.match(prompt, /phase=screening\|intake\|dialogue\|mapping\|experiment candidates=/);
 });
 
+test("requires the Phase 3 mapping to use well-formed Markdown structure", async () => {
+  const [prompt, app, styles] = await Promise.all([
+    readFile(new URL("../netlify/functions/triage-prompt.mjs", import.meta.url), "utf8"),
+    readFile(new URL("../public/app.js", import.meta.url), "utf8"),
+    readFile(new URL("../public/styles.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(prompt, /Format the entire Phase 3 response as Markdown source text/);
+  assert.match(prompt, /## Mapping/);
+  assert.match(prompt, /### 1\. Primary Presenting Structure/);
+  assert.match(prompt, /### 2\. Co-Presenting Structures/);
+  assert.match(prompt, /### 3\. Practice Directions/);
+  assert.match(prompt, /### 4\. Failure Modes/);
+  assert.match(prompt, /### 5\. Limits of This Reading/);
+  assert.match(prompt, /blank line before and after every heading, paragraph, and list/);
+  assert.match(prompt, /Never run a heading into a paragraph or place multiple list items on one line/);
+  assert.match(app, /body\.className = "body"/);
+  assert.ok(
+    app.includes('`**Facilitator:**\\n\\n${clean}\\n`'),
+    "export must put facilitator content after a blank line so Markdown headings remain valid",
+  );
+  assert.match(styles, /\.msg\.facilitator \.body\s*\{[^}]*white-space:\s*pre-wrap/s);
+});
+
 test("publishes the beta feedback form and links it from the instrument", async () => {
   const [index, feedback, thanks] = await Promise.all([
     readFile(new URL("../public/index.html", import.meta.url), "utf8"),
